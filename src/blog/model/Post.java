@@ -9,7 +9,7 @@ public class Post {
     private String text;
     private String category;
     private Date createdDate;
-    private SimpleDateFormat sdf = new SimpleDateFormat("DD-MM-YYYY hh:ss");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yy hh:mm:ss");
 
 
     public Post(String title, String text, String category, Date createdDate) {
@@ -79,9 +79,9 @@ public class Post {
     @Override
     public String toString() {
         String result = "Title:" + title;
-        result+="\nText: "+text;
-        result+="\nCategory: "+category;
-        result+="\nCreated Date: "+sdf;
+        result+=" \nText: "+text;
+        result+=" \nCategory: "+category;
+        result+=" \nDate: "+sdf.format(createdDate);
         return result;
     }
 }

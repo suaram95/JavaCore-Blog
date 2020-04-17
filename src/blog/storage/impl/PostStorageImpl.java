@@ -27,7 +27,7 @@ public class PostStorageImpl implements PostStorage {
     @Override
     public Post getPostByTitle(String title) throws PostNotFoundException {
         for (int i = 0; i < size; i++) {
-            if (posts[i].getTitle().equals(title)) {
+            if (posts[i].getTitle().contains(title)) {
                 return posts[i];
             }
         }
@@ -38,7 +38,7 @@ public class PostStorageImpl implements PostStorage {
     public void searchPostsByKeyword(String keyword) {
         for (int i = 0; i < size; i++) {
             Post post = posts[i];
-            if (post.getTitle().equals(keyword) || post.getText().equals(keyword)) {
+            if (post.getTitle().contains(keyword) && post.getText().contains(keyword)) {
                 System.out.println(post);
             } else {
                 String format = String.format("Added %s keyword was't found not in Posts title, not text", keyword);
