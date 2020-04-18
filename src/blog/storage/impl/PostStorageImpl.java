@@ -60,8 +60,19 @@ public class PostStorageImpl implements PostStorage {
 
     @Override
     public void printAllPosts() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(posts[i]);
+        if (isEmpty()) {
+            System.out.println("Post Storage is empty. Please add post first!");
+        } else {
+            for (int i = 0; i < size; i++) {
+                System.out.println(posts[i]);
+            }
         }
     }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+
 }

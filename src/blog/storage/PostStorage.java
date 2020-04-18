@@ -14,4 +14,6 @@ public interface PostStorage {
     void printPostsByCategory(String category);
 
     void printAllPosts();
+
+    boolean isEmpty();
 }
