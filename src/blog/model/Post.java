@@ -106,7 +106,7 @@ public class Post {
                 ", text='" + text + '\'' +
                 ", category='" + category + '\'' +
                 ", createdDate=" + createdDate +
-                ", sdf=" + sdf +
+                ", sdf=" + sdf.format(createdDate)+
                 '}';
     }
 }
