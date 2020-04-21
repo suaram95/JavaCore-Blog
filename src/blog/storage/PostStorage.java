@@ -1,6 +1,7 @@
 package blog.storage;
 
 import blog.exception.PostNotFoundException;
+import blog.model.Category;
 import blog.model.Post;
 
 public interface PostStorage {
@@ -11,7 +12,7 @@ public interface PostStorage {
 
     void searchPostsByKeyword(String keyword);
 
-    void printPostsByCategory(String category);
+    void printPostsByCategory(Category category);
 
     void printAllPosts();
 

@@ -1,7 +1,10 @@
 package blog;
 
+import blog.exception.DuplicateUserException;
 import blog.exception.PostNotFoundException;
 import blog.exception.UserNotFoundException;
+import blog.model.Category;
+import blog.model.Gender;
 import blog.model.Post;
 import blog.model.User;
 import blog.storage.impl.PostStorageImpl;
@@ -19,7 +22,7 @@ public class BlogMain implements Commands {
     public static void main(String[] args) {
         boolean isRun = true;
         while (isRun) {
-           Commands.mainCommands();
+            Commands.mainCommands();
             int command;
             try {
                 command = Integer.parseInt(SCANNER.nextLine());
@@ -44,7 +47,7 @@ public class BlogMain implements Commands {
     }
 
     private static void register() {
-        System.out.println("Input data for Registration /Name, Surname, Email, Password/");
+        System.out.println("Input data for Registration /Name, Surname, Email, Password, Gender(MALE or FEMALE)/");
         String userStr = SCANNER.nextLine();
         String[] userData = userStr.split(",");
         try {
@@ -53,11 +56,14 @@ public class BlogMain implements Commands {
             user.setSurname(userData[1]);
             user.setEmail(userData[2]);
             user.setPassword(userData[3]);
+            user.setGender(Gender.valueOf(userData[4].toUpperCase()));
             USER_STORAGE.add(user);
             System.out.println("Thanks you are registered!");
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
             System.out.println("Invalid data!");
             register();
+        } catch (DuplicateUserException e){
+            e.getMessage();
         }
     }
 
@@ -68,9 +74,11 @@ public class BlogMain implements Commands {
         }
         System.out.println("Please enter email & password to LOGIN");
         try {
+            System.out.print("Email: ");
             String userEmail = SCANNER.nextLine();
+            System.out.print("Password: ");
             String userPassword = SCANNER.nextLine();
-            loginedUser=USER_STORAGE.getUserByEmailAndPassword(userEmail, userPassword);
+            loginedUser = USER_STORAGE.getUserByEmailAndPassword(userEmail, userPassword);
             System.out.println("You succesfully entered your profile");
             loginedUserCommands();
         } catch (UserNotFoundException e) {
@@ -79,9 +87,8 @@ public class BlogMain implements Commands {
     }
 
 
-
     private static void loginedUserCommands() {
-        boolean isRun=true;
+        boolean isRun = true;
         while (isRun) {
             Commands.userCommands();
             int command;
@@ -92,7 +99,7 @@ public class BlogMain implements Commands {
             }
             switch (command) {
                 case LOGOUT:
-                    isRun=false;
+                    isRun = false;
                     break;
                 case ADD_POST:
                     addPost();
@@ -117,28 +124,31 @@ public class BlogMain implements Commands {
 
     private static void addPost() {
 
-        System.out.println("Input info about post /Title, Text, Category/");
+        System.out.println("Input info about post /Title, Text, Category(IT, ART, MUSIC, SPORT, ECONOMICS, POLITICAL)/");
         String postStr = SCANNER.nextLine();
         String[] postData = postStr.split(",");
         try {
-
             Post post = new Post();
             post.setUser(loginedUser);
             post.setTitle(postData[0]);
             post.setText(postData[1]);
-            post.setCategory(postData[2]);
+            post.setCategory(Category.valueOf(postData[2].toUpperCase()));
             post.setCreatedDate(new Date());
             POST_STORAGE.add(post);
-            System.out.println("Thanks post was added!");
+            System.out.println("Thanks post was added!\n");
             System.out.println(post);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Invalid data!");
+            addPost();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Category " + "<" + postData[2] + ">" + " does not exist, " +
+                    "please write one of the above categories.");
             addPost();
         }
     }
 
     private static void searchPost() {
-        if (POST_STORAGE.isEmpty()){
+        if (POST_STORAGE.isEmpty()) {
             System.out.println("Post Storage is empty. Please add post first!");
             addPost();
         }
@@ -148,7 +158,7 @@ public class BlogMain implements Commands {
     }
 
     private static void postByTitle() {
-        if (POST_STORAGE.isEmpty()){
+        if (POST_STORAGE.isEmpty()) {
             System.out.println("Post Storage is empty. Please add post first!");
             addPost();
         }
@@ -157,18 +167,18 @@ public class BlogMain implements Commands {
         try {
             POST_STORAGE.getPostByTitle(title);
         } catch (PostNotFoundException e) {
-            System.out.println(e.getMessage());
-            postByTitle();
+            e.getMessage();
         }
     }
 
     private static void postsByCategory() {
-        if (POST_STORAGE.isEmpty()){
+        if (POST_STORAGE.isEmpty()) {
             System.out.println("Post Storage is empty. Please add post first!");
             addPost();
         }
         System.out.println("Input category name to find posts");
-        String category = SCANNER.nextLine();
+        String categoryStr = SCANNER.nextLine();
+        Category category=Category.valueOf(categoryStr.toUpperCase());
         POST_STORAGE.printPostsByCategory(category);
     }
 }

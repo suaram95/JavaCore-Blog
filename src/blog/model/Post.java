@@ -8,11 +8,11 @@ public class Post {
     private User user;
     private String title;
     private String text;
-    private String category;
+    private Category category;
     private Date createdDate;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yy hh:mm:ss");
 
-    public Post(User user, String title, String text, String category, Date createdDate, SimpleDateFormat sdf) {
+    public Post(User user, String title, String text, Category category, Date createdDate, SimpleDateFormat sdf) {
         this.user = user;
         this.title = title;
         this.text = text;
@@ -48,11 +48,11 @@ public class Post {
         this.text = text;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -82,7 +82,7 @@ public class Post {
         if (user != null ? !user.equals(post.user) : post.user != null) return false;
         if (title != null ? !title.equals(post.title) : post.title != null) return false;
         if (text != null ? !text.equals(post.text) : post.text != null) return false;
-        if (category != null ? !category.equals(post.category) : post.category != null) return false;
+        if (category != post.category) return false;
         if (createdDate != null ? !createdDate.equals(post.createdDate) : post.createdDate != null) return false;
         return sdf != null ? sdf.equals(post.sdf) : post.sdf == null;
     }
@@ -100,13 +100,14 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "user=" + user +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", category='" + category + '\'' +
-                ", createdDate=" + createdDate +
-                ", sdf=" + sdf.format(createdDate)+
-                '}';
+        String result;
+        result = "      POST " + '\n';
+        result += "  About User " +'\n'+" Name: "+user.getName()+'\n'+" Surname: "+user.getSurname()+ '\n'
+                   +" Email: "+user.getEmail() + '\n';
+        result += "   Title: " + title + '\n';
+        result += "   Text: " + text + '\n';
+        result += "   Category: " + category + '\n';
+        result += "   Date: " + sdf.format(createdDate)+'\n';
+        return result;
     }
 }

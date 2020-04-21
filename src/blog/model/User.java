@@ -6,12 +6,14 @@ public class User {
     private String surname;
     private String email;
     private String password;
+    private Gender gender;
 
-    public User(String name, String surname, String email, String password) {
+    public User(String name, String surname, String email, String password, Gender gender) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.gender = gender;
     }
 
     public User() {
@@ -49,6 +51,14 @@ public class User {
         this.password = password;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,7 +69,8 @@ public class User {
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        return password != null ? password.equals(user.password) : user.password == null;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        return gender == user.gender;
     }
 
     @Override
@@ -68,16 +79,19 @@ public class User {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        String result;
+        result="User:"+'\n';
+        result+="   Name: "+name+'\n';
+        result+="   Surname: "+surname+'\n';
+        result+="   Email: "+email+'\n';
+        result+="   Password: "+password+'\n';
+        result+="   Gender: "+gender;
+        return result;
     }
 }

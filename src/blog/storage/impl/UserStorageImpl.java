@@ -1,5 +1,6 @@
 package blog.storage.impl;
 
+import blog.exception.DuplicateUserException;
 import blog.exception.UserNotFoundException;
 import blog.model.User;
 import blog.storage.UserStorage;
@@ -9,7 +10,10 @@ public class UserStorageImpl implements UserStorage {
     private User[] users=new User[16];
     private int size=0;
 
-    public void add(User user){
+    public void add(User user) throws DuplicateUserException {
+       if (getByEmail(user.getEmail())!=null){
+           throw new DuplicateUserException("User with email:"+"<"+user.getEmail()+">"+" already exists");
+       }
         if (users.length==size){
             extend();
         }
@@ -33,6 +37,15 @@ public class UserStorageImpl implements UserStorage {
                                          " password: %s does not exist.",email,password));
     }
 
+    @Override
+    public User getByEmail(String email) {
+        for (int i = 0; i < size; i++) {
+            if (users[i].getEmail().equals(email)) {
+                return users[i];
+            }
+        }
+        return null;
+    }
 
 
     @Override

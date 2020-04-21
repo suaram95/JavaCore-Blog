@@ -1,6 +1,7 @@
 package blog.storage.impl;
 
 import blog.exception.PostNotFoundException;
+import blog.model.Category;
 import blog.model.Post;
 import blog.storage.PostStorage;
 
@@ -27,29 +28,29 @@ public class PostStorageImpl implements PostStorage {
     @Override
     public Post getPostByTitle(String title) throws PostNotFoundException {
         for (int i = 0; i < size; i++) {
-            if (posts[i].getTitle().contains(title)) {
-                return posts[i];
+            if (posts[i].getTitle().equals(title)) {
+                System.out.println(posts[i]);
             }
         }
-        throw new PostNotFoundException(String.format("Post with %s title does not exist", title));
+        throw new PostNotFoundException(String.format("Post with title: %s does not exist", title));
     }
 
     @Override
     public void searchPostsByKeyword(String keyword) {
         for (int i = 0; i < size; i++) {
             Post post = posts[i];
-            if (post.getTitle().contains(keyword) && post.getText().contains(keyword)) {
+            if (post.getText().equals(keyword) || post.getTitle().equals(keyword)) {
                 System.out.println(post);
             } else {
-                String format = String.format("Added %s keyword was't found not in Posts title, not text", keyword);
+                System.out.println("Keyword " + "<" + keyword + ">" + " was't found not in Posts title, not text");
             }
         }
     }
 
     @Override
-    public void printPostsByCategory(String category) {
+    public void printPostsByCategory(Category category) {
         for (int i = 0; i < size; i++) {
-            Post post = posts[i];
+            Post post = posts[0];
             if (post.getCategory().equals(category)) {
                 System.out.println(post);
             } else {
