@@ -10,7 +10,7 @@ public class Post {
     private String text;
     private Category category;
     private Date createdDate;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yy hh:mm:ss");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss");
 
     public Post(User user, String title, String text, Category category, Date createdDate, SimpleDateFormat sdf) {
         this.user = user;
